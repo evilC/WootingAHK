@@ -48,7 +48,6 @@ ClearAnalogData:
 
 ClearLog:
 	GuiControl, , % hLog, % ""
-	LV_Delete()
 	return
 
 GuiClose:
