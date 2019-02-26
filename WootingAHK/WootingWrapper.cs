@@ -45,6 +45,13 @@ namespace WootingAHK
             RGBControl.ResetKey(tuple.Item1, tuple.Item2);
         }
 
+        public int[] GetScanCodeList()
+        {
+            var list = WootingCodeLookup.ScanCodeToRowCol.Keys.ToList();
+            list.Sort();
+            return list.ToArray();
+        }
+
         public string OkCheck()
         {
             return "OK";

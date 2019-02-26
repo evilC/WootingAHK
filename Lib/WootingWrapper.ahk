@@ -18,8 +18,14 @@ class WootingWrapper {
 		}
 	}
 	
+	SubscribeKeyCode(keyCode, callback, wintitle := ""){
+		kwr := new this.KeyWatcherWrapper(this, keyCode, callback, wintitle)
+		return kwr
+	}
+	
 	SubscribeKey(keyName, callback, wintitle := ""){
-		kwr := new this.KeyWatcherWrapper(this, keyName, callback, wintitle)
+		keyCode := GetKeySC(keyName)
+		kwr := new this.KeyWatcherWrapper(this, keyCode, callback, wintitle)
 		return kwr
 	}
 	
@@ -42,10 +48,10 @@ class WootingWrapper {
 		DigitalState := 0
 		Blocked := 0
 		HotkeyStrings := {0: "", 1: ""}
-		__New(parent, keyName, callback, wintitle := ""){
+		__New(parent, keyCode, callback, wintitle := ""){
 			this.Parent := parent
-			this.KeyName := keyName
-			this.KeyCode := GetKeySC(keyName)
+			this.KeyName := GetKeyName("SC" Format("{:x}", keyCode))
+			this.KeyCode := keyCode
 			this.Callback := callback
 			this.WinTitle := wintitle
 			this.Instance := this.Parent.Instance.SubscribeKey(this.KeyCode, callback)
