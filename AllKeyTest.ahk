@@ -72,13 +72,13 @@ KeyPressed(code, name, state){
 		try {
 			Wooting.SetKeyRgb(name, 255, 0, 0)
 		} catch e {
-			LogException("SetKeyRgb Exception:`nName: " name "`nMessage`n:" e.message)
+			LogMessage("SetKeyRgb Exception:`nName: " name "`nMessage`n:" e.message)
 		}
 	} else {
 		try {
 			Wooting.ResetKeyRgb(name)
 		} catch e {
-			LogException("ResetKeyRgb exception:`nName: " name "`nMessage:`n" e.message)
+			LogMessage("ResetKeyRgb exception:`nName: " name "`nMessage:`n" e.message)
 		}
 	}
 	if (KeyWatchers.HasKey(code))
@@ -86,10 +86,16 @@ KeyPressed(code, name, state){
 	try {
 		KeyWatchers[code] := Wooting.SubscribeKeyCode(code		; Subscribe to the A key - use the AHK key name
 			, Func("AxisChanged").Bind(code, name)) 			; Call the Function "AxisChanged" when it changes
-		str := "Subscribed to Key Code " code " ( " name " )`r`n`r`n"
-		AppendText(hLog, &str)
+		try {
+			rowCol := Wooting.Instance.GetKeyRowColFromScanCode(code)
+		} catch f {
+			LogMessage("GetKeyRowColFromScanCode exception:`nCode: " code "`nMessage:`n" f.message)
+		}
+		LogMessage("Subscribed to Key via API`nCode: " code ", Name: " name "`nRow: " rowCol.Row ", Column: " rowCol.Col )
+		;~ str := "Subscribed to Key Code " code " ( " name " )`r`n`r`n"
+		;~ AppendText(hLog, &str)
 	} catch e {
-		LogException("SubscribeKeyCode exception:`nCode: " code "`nName: " name "`nMessage:`n" e.message)
+		LogMessage("SubscribeKeyCode exception:`nCode: " code "`nName: " name "`nMessage:`n" e.message)
 	}
 }
 
@@ -101,7 +107,7 @@ AxisChanged(code, name, state){
 	LV_Modify(row, "Vis")
 }
 
-LogException(str){
+LogMessage(str){
 	global hLog
 	str := RegExReplace(str, "\n", "`r`n") "`r`n====================`r`n"
 	AppendText(hLog, &str)
