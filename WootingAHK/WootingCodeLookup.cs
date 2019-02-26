@@ -126,7 +126,7 @@ namespace WootingAHK
 
             // Row 5
             { (5, 0), 29 },      // LCtrl
-            { (5, 1), 91 },      // LWin
+            { (5, 1), 347 },      // LWin
             { (5, 2), 56 },      // LAlt
             { (5, 6), 57 },      // Space
             { (5, 10), 312 },      // RAlt 56 + 256 Extended bit
