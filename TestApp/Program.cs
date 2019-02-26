@@ -13,7 +13,8 @@ namespace TestApp
         {
             var w = new WootingWrapper();
 
-            w.SubscribeKey(30, new Action<int>((value) =>
+            // 1 = Esc key
+            w.SubscribeKey(1, new Action<int>((value) =>
             {
                 Console.WriteLine("Subscription Value: " + value);
             }));

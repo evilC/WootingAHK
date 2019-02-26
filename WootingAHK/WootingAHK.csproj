@@ -51,4 +51,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Q /Y "$(SolutionDir)Dependencies\*.*" "$(SolutionDir)Lib"
+xcopy /Q /Y "$(TargetDir)$(TargetFileName)" "$(SolutionDir)Lib"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>xcopy /Q /Y "$(SolutionDir)Dependencies\*.*" "$(TargetDir)"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

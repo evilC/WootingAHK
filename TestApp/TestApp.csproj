@@ -56,4 +56,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy /Q /Y "$(SolutionDir)Dependencies\*.*" "$(TargetDir)"</PreBuildEvent>
+  </PropertyGroup>
 </Project>
