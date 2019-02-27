@@ -86,14 +86,8 @@ KeyPressed(code, name, state){
 		if (state){	;; Only subscribe on key press
 			KeyWatchers[code] := Wooting.SubscribeKeyCode(code		; Subscribe to the A key - use the AHK key name
 				, Func("AxisChanged").Bind(code, name)) 			; Call the Function "AxisChanged" when it changes
-			try {
-				rowCol := Wooting.Instance.GetKeyRowColFromScanCode(code)
-			} catch f {
-				LogMessage("GetKeyRowColFromScanCode exception:`nCode: " code "`nMessage:`n" f.message)
-			}
+			rowCol := GetRowCol(code)
 			LogMessage("Subscribed to Key via API`nCode: " code ", Name: " name "`nRow: " rowCol.Row ", Column: " rowCol.Col )
-			;~ str := "Subscribed to Key Code " code " ( " name " )`r`n`r`n"
-			;~ AppendText(hLog, &str)
 		}
 	} catch e {
 		LogMessage("SubscribeKeyCode exception:`nCode: " code "`nName: " name "`nMessage:`n" e.message)
@@ -112,6 +106,15 @@ LogMessage(str){
 	global hLog
 	str := RegExReplace(str, "\n", "`r`n") "`r`n====================`r`n"
 	AppendText(hLog, &str)
+}
+
+GetRowCol(code){
+	global Wooting
+	try {
+		return Wooting.GetKeyRowColFromScanCode(code)
+	} catch e {
+		LogMessage("GetKeyRowColFromScanCode exception:`nCode: " code "`nMessage:`n" e.message)
+	}
 }
 
 AppendText(hEdit, ptrText) {

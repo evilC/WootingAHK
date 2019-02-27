@@ -39,6 +39,10 @@ class WootingWrapper {
 		this.Instance.ResetKeyRgb(scanCode)
 	}
 	
+	GetKeyRowColFromScanCode(code){
+		return this.Instance.GetKeyRowColFromScanCode(code)
+	}
+	
 	Dispose(){
 		this.Instance.Dispose()
 	}
