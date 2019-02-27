@@ -4,11 +4,10 @@ class AllKeyBinder{
 		this.Callback := callback
 		Loop 512 {
 			i := A_Index
+			if (i == 84)	; ignore PrintScreen on 84, use 311
+				continue
 			code := Format("{:x}", i)
 			n := GetKeyName("sc" code)
-			;~ str .= n "`n"
-			if (n == "" || keys.HasKey(n))
-				continue
 			
 			keys[n] := code
 			
@@ -18,7 +17,6 @@ class AllKeyBinder{
 			fn := this.KeyEvent.Bind(this, i, n, 0)
 			hotkey, % pfx "sc" code " up", % fn, On		
 		}
-		;~ msgbox % str
 	}
 	
 	KeyEvent(code, name, state){
