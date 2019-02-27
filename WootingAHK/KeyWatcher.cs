@@ -14,9 +14,11 @@ namespace WootingAHK
         private byte _currentValue = 0;
         private readonly dynamic _callback;
         private (byte, byte) _rowColTuple;
+        private readonly WorkerThread _callbackThread;
 
         public KeyWatcher((byte row, byte col) rowCol, dynamic callback)
         {
+            _callbackThread = new WorkerThread().Start();
             _callback = callback;
             _rowColTuple = rowCol;
             _thread = new Thread(WatchFn);
@@ -31,7 +33,7 @@ namespace WootingAHK
                 if (val != _currentValue)
                 {
                     _currentValue = val;
-                    ThreadPool.QueueUserWorkItem(cb => _callback(val));
+                    _callbackThread.Actions.Add(() => _callback(val));
                 }
                 Thread.Sleep(10);
             }
