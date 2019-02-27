@@ -7,7 +7,7 @@ class AllKeyBinder{
 			code := Format("{:x}", i)
 			n := GetKeyName("sc" code)
 			;~ str .= n "`n"
-			if (!n || keys.HasKey(n))
+			if (n == "" || keys.HasKey(n))
 				continue
 			
 			keys[n] := code
