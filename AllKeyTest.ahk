@@ -83,9 +83,8 @@ KeyPressed(code, name, state){
 	if (KeyWatchers.HasKey(code))
 		return
 	try {
-		if (state){	;; Only subscribe on key press
-			KeyWatchers[code] := Wooting.SubscribeKey(code		; Subscribe to the A key - use the Scan Code
-				, Func("AxisChanged").Bind(code, name)) 			; Call the Function "AxisChanged" when it changes
+		if (state){	; Only subscribe on key press
+			KeyWatchers[code] := Wooting.SubscribeKey(code, Func("AxisChanged").Bind(code, name)).Init()
 			rowCol := GetRowCol(code)
 			LogMessage("Subscribed to Key via API`nCode: " code ", Name: " name "`nRow: " rowCol.Row ", Column: " rowCol.Col )
 		}

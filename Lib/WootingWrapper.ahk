@@ -18,8 +18,8 @@ class WootingWrapper {
 		}
 	}
 	
-	SubscribeKey(scanCode, callback, wintitle := ""){
-		kwr := new this.KeyWatcherWrapper(this, scanCode, callback, wintitle)
+	SubscribeKey(scanCode, callback){
+		kwr := new this.KeyWatcherWrapper(this, scanCode, callback)
 		return kwr
 	}
 	
@@ -43,26 +43,45 @@ class WootingWrapper {
 		AnalogState := 0
 		DigitalState := 0
 		Blocked := 0
+		HotkeyEnabled := 0
+		WinTitle := ""
 		HotkeyStrings := {0: "", 1: ""}
-		__New(parent, scanCode, callback, wintitle := ""){
+		
+		__New(parent, scanCode, callback){
 			this.Parent := parent
 			this.KeyName := GetKeyName("SC" Format("{:x}", scanCode))
 			this.ScanCode := scanCode
 			this.Callback := callback
-			this.WinTitle := wintitle
 			this.Instance := this.Parent.Instance.SubscribeKey(this.ScanCode, callback)
-			;~ this.Instance := this.Parent.Instance.SubscribeKey(this.ScanCode, this._AnalogStateChange.Bind(this))
-			this._SetHotkeyState(true)
 		}
 		
 		SetBlock(state){
 			this.Blocked := state
-			this._SetHotkeyState(true)
+			this._ResetHotkeyIfNeeded()
 			return this
 		}
 		
 		ToggleBlock(){
 			this.SetBlock(!this.Blocked)
+			this._ResetHotkeyIfNeeded()
+			return this
+		}
+		
+		SetWinTitle(title){
+			this.WinTitle := winTitle
+			this._ResetHotkeyIfNeeded()
+			return this
+		}
+		
+		Init(){
+			this._SetHotkeyState(true)
+			return this
+		}
+		
+		_ResetHotkeyIfNeeded(){
+			if (this.HotkeyEnabled){
+				this._SetHotkeyState(true)
+			}
 		}
 		
 		_SetHotkeyState(state){
@@ -91,6 +110,7 @@ class WootingWrapper {
 				Hotkey, % str, % fn, On
 				hotkey, IfWinActive	; Turn off context-sensitve mode for further hotkeys
 			}
+			this.HotkeyEnabled := state
 		}
 		
 		_DigitalStateChange(state){
