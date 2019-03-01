@@ -11,8 +11,9 @@ I have discussed this with Wooting, and the next iteration of the API is likely 
 2) The Wooting API is poll-based, requiring quite a lot of processing to get key events, which is not very suitable to do in AHK, as it is interpreted and a little slow.  
 This library seeks to solve these issues using a C# DLL to do all the heavy lifting, with a light AHK wrapoer using CLR.  
 
-## Current Limitations
-Currently, the lookup table is only complete for ISO keyboards. If you have an ANSI keyboard, please feel free to contribute  
+## Current Limitations / Issues
+* Currently, the lookup table is only complete for ISO keyboards. If you have an ANSI keyboard, please feel free to contribute  
+* The RGB API does not properly support all keys on the Wooting Two at the moment
 
 ## Downloads
 Use the Releases page link at the top - **DO NOT** click the green "Clone or Download" button to the right!  
@@ -67,3 +68,20 @@ keyWatcher := Wooting.SubscribeKey(GetKeySC("A"), Func("AxisChanged"))
 ## ToggleBlock
 Toggles blocking On / Off  
 `keyWatcher.ToggleBlock()`  
+
+# RGB API
+## SetKeyRGB
+Set a specific key to a colour  
+`SetKeyRgb(<Scan Code>, <Red>, <Green>, <Blue>)`  
+eg `Wooting.SetKeyRgb(GetKeySC("F1"), 255, 0, 0)`  
+
+## ResetKeyRGB
+Reset key to it's default colour, as set by the Wootility  
+`ResetKeyRgb(<Scan Code>)`  
+eg `Wooting.ResetKeyRgb(GetKeySC("F1"))`
+
+# Misc
+## Dispose  
+Cleanly exit the library, and reset the keyboard RGB  
+`Dispose()`  
+eg `Wooting.Dispose()`  
