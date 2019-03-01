@@ -3,7 +3,7 @@
 Wooting := new WootingWrapper()
 
 last := A_TickCount
-keyWatcher := Wooting.SubscribeKey(GetKeySC("A")	; Subscribe to the A key - use the AHK key name
+keyWatcher := Wooting.SubscribeKey(GetKeySC("A")	; Subscribe to the A key - use the Scan Code
 		, Func("AxisChanged") 						; Call the Function "AxisChanged" when it changes
 		, "ahk_class Notepad")						; Key Blocking is only active in Notepad
 
