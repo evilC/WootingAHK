@@ -11,9 +11,6 @@ I have discussed this with Wooting, and the next iteration of the API is likely 
 2) The Wooting API is poll-based, requiring quite a lot of processing to get key events, which is not very suitable to do in AHK, as it is interpreted and a little slow.  
 This library seeks to solve these issues using a C# DLL to do all the heavy lifting, with a light AHK wrapoer using CLR.  
 
-## Features
-* Provides a layout-agnostic (eg QWERTY/AZERTY etc) lookup for Key Name -> Scan Code -> Wooting Row/Column code
-
 ## Current Limitations
 Currently, the lookup table is only complete for ISO keyboards. If you have an ANSI keyboard, please feel free to contribute  
 
