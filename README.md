@@ -60,10 +60,7 @@ The KeyWatcher object returned by `SubscribeKey` has the following functions:
 Turns on / off blocking of the key  
 `keyWatcher := keyWatcher.SetBlock(<True/False>)`  
 Returns itself, so you can "chain" commands - eg  
-```
-keyWatcher := Wooting.SubscribeKey(GetKeySC("A"), Func("AxisChanged"))
-  .Setblock(true)`
-```
+`keyWatcher := Wooting.SubscribeKey(GetKeySC("A"), Func("AxisChanged")).Setblock(true)`
 
 ## ToggleBlock
 Toggles blocking On / Off  
