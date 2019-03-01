@@ -18,29 +18,21 @@ class WootingWrapper {
 		}
 	}
 	
-	SubscribeKeyCode(keyCode, callback, wintitle := ""){
-		kwr := new this.KeyWatcherWrapper(this, keyCode, callback, wintitle)
+	SubscribeKey(scanCode, callback, wintitle := ""){
+		kwr := new this.KeyWatcherWrapper(this, scanCode, callback, wintitle)
 		return kwr
 	}
 	
-	SubscribeKey(keyName, callback, wintitle := ""){
-		keyCode := GetKeySC(keyName)
-		kwr := new this.KeyWatcherWrapper(this, keyCode, callback, wintitle)
-		return kwr
-	}
-	
-	SetKeyRgb(keyName, red, green, blue){
-		scanCode := GetKeySc(keyName)
+	SetKeyRgb(scanCode, red, green, blue){
 		this.Instance.SetKeyRgb(scanCode, red, green, blue)
 	}
 	
-	ResetKeyRgb(keyName){
-		scanCode := GetKeySc(keyName)
+	ResetKeyRgb(scanCode){
 		this.Instance.ResetKeyRgb(scanCode)
 	}
 	
-	GetKeyRowColFromScanCode(code){
-		return this.Instance.GetKeyRowColFromScanCode(code)
+	GetKeyRowColFromScanCode(scanCode){
+		return this.Instance.GetKeyRowColFromScanCode(scanCode)
 	}
 	
 	Dispose(){
@@ -52,14 +44,14 @@ class WootingWrapper {
 		DigitalState := 0
 		Blocked := 0
 		HotkeyStrings := {0: "", 1: ""}
-		__New(parent, keyCode, callback, wintitle := ""){
+		__New(parent, scanCode, callback, wintitle := ""){
 			this.Parent := parent
-			this.KeyName := GetKeyName("SC" Format("{:x}", keyCode))
-			this.KeyCode := keyCode
+			this.KeyName := GetKeyName("SC" Format("{:x}", scanCode))
+			this.ScanCode := scanCode
 			this.Callback := callback
 			this.WinTitle := wintitle
-			this.Instance := this.Parent.Instance.SubscribeKey(this.KeyCode, callback)
-			;~ this.Instance := this.Parent.Instance.SubscribeKey(this.KeyCode, this._AnalogStateChange.Bind(this))
+			this.Instance := this.Parent.Instance.SubscribeKey(this.ScanCode, callback)
+			;~ this.Instance := this.Parent.Instance.SubscribeKey(this.ScanCode, this._AnalogStateChange.Bind(this))
 			this._SetHotkeyState(true)
 		}
 		

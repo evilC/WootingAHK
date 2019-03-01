@@ -69,13 +69,13 @@ KeyPressed(code, name, state){
 	keyStates[code] := state
 	if (state){
 		try {
-			Wooting.SetKeyRgb(name, 255, 0, 0)
+			Wooting.SetKeyRgb(code, 255, 0, 0)
 		} catch e {
 			LogMessage("SetKeyRgb Exception:`nName: " name "`nMessage`n:" e.message)
 		}
 	} else {
 		try {
-			Wooting.ResetKeyRgb(name)
+			Wooting.ResetKeyRgb(code)
 		} catch e {
 			LogMessage("ResetKeyRgb exception:`nName: " name "`nMessage:`n" e.message)
 		}
@@ -84,7 +84,7 @@ KeyPressed(code, name, state){
 		return
 	try {
 		if (state){	;; Only subscribe on key press
-			KeyWatchers[code] := Wooting.SubscribeKeyCode(code		; Subscribe to the A key - use the AHK key name
+			KeyWatchers[code] := Wooting.SubscribeKey(code		; Subscribe to the A key - use the AHK key name
 				, Func("AxisChanged").Bind(code, name)) 			; Call the Function "AxisChanged" when it changes
 			rowCol := GetRowCol(code)
 			LogMessage("Subscribed to Key via API`nCode: " code ", Name: " name "`nRow: " rowCol.Row ", Column: " rowCol.Col )

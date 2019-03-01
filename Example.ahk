@@ -3,9 +3,9 @@
 Wooting := new WootingWrapper()
 
 last := A_TickCount
-keyWatcher := Wooting.SubscribeKey("A"	; Subscribe to the A key - use the AHK key name
-		, Func("AxisChanged") 			; Call the Function "AxisChanged" when it changes
-		, "ahk_class Notepad")			; Key Blocking is only active in Notepad
+keyWatcher := Wooting.SubscribeKey(GetKeySC("A")	; Subscribe to the A key - use the AHK key name
+		, Func("AxisChanged") 						; Call the Function "AxisChanged" when it changes
+		, "ahk_class Notepad")						; Key Blocking is only active in Notepad
 
 GoSub, ToggleBlock						; Turn on blocking
 return
@@ -15,9 +15,9 @@ F1::
 ToggleBlock:
 	keyWatcher.ToggleBlock()			; Toggle blocking
 	if (keyWatcher.Blocked){
-		Wooting.SetKeyRgb("F1", 255, 0, 0)	; Turn F1 Red to indicate key is disabled
+		Wooting.SetKeyRgb(GetKeySC("F1"), 255, 0, 0)	; Turn F1 Red to indicate key is disabled
 	} else {
-		Wooting.SetKeyRgb("F1", 0, 255, 0)	; Turn F1 Green to indicate key is enabled
+		Wooting.SetKeyRgb(GetKeySC("F1"), 0, 255, 0)	; Turn F1 Green to indicate key is enabled
 	}
 	return
 
