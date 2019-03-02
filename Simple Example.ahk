@@ -2,10 +2,10 @@
 Simplest example of using the wooting wrapper for input only
 Demos Analog and Digital input, and how to create WootingKeys
 */
-#include Lib\WootingWrapper.AHK
+#include Lib\WootingAHK.AHK
 
 ; Start up the WootingAHK library
-Wooting := new WootingWrapper()
+Wooting := new WootingAHK()
 
 ; Create a wrapper for the "A" key
 wootingKey := Wooting.AddKey(GetKeySC("A"))			; Create a WootingKey for the A key using the Scan Code

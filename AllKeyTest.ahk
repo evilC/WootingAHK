@@ -1,4 +1,4 @@
-#include Lib\WootingWrapper.AHK
+#include Lib\WootingAHK.AHK
 OutputDebug DBGVIEWCLEAR
 
 ShortSep := "========================="
@@ -37,7 +37,7 @@ Gui, Show, , WootingAHK Analog / RGB Tester
 
 HotkeysEnabled := 0
 GoSub, BlockChanged	; Init block var
-Wooting := new WootingWrapper()
+Wooting := new WootingAHK()
 
 return
 

@@ -1,6 +1,6 @@
-#include Lib\WootingWrapper.AHK
+#include Lib\WootingAHK.AHK
 
-Wooting := new WootingWrapper()
+Wooting := new WootingAHK()
 
 last := A_TickCount
 wootingKey := Wooting.AddKey(GetKeySC("A"))			; Create a WootingKey for the A key using the Scan Code

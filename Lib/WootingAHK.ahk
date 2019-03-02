@@ -1,6 +1,6 @@
 #include %A_LineFile%\..\CLR.ahk
 
-class WootingWrapper {
+class WootingAHK {
 	WootingKeys := {}
 	
 	__New(){
