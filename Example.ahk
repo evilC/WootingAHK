@@ -3,11 +3,12 @@
 Wooting := new WootingWrapper()
 
 last := A_TickCount
-wootingKey := Wooting.AddKey(GetKeySC("A")	; Subscribe to the A key - use the Scan Code
-		, Func("AxisChanged"))
-		.SetBlock(true)
-		;~ .SetWinTitle("ahk_class Notepad")		; Only enable the hotkey in Notepad
-		.Init() 									; Call the Function "AxisChanged" when it changes
+wootingKey := Wooting.AddKey(GetKeySC("A"))			; Create a WootingKey for the A key using the Scan Code
+		.OnAnalog(Func("AxisChanged"))				; Call the Function "AxisChanged" and pass it Analog value
+		;.OnDigital(Func("HotkeyChanged"))			; Call the Function "HotkeyChanged" and pass it Digital value
+		.SetBlock(true)								; Enable blocking for the hotkey
+		;.SetWinTitle("ahk_class Notepad")			; Only enable the hotkey in Notepad
+		.SetHotkey(true)							; Turn on the hotkey
 
 GoSub, InitToggleBlock
 return
@@ -24,7 +25,7 @@ F1::
 	return
 
 ; Called and passed analog value when key changes state
-AxisChanged(isDigital, value){
+AxisChanged(value){
 	static threshold := 100
 	static oldVal := 0
 	static lastEvent := "NONE"

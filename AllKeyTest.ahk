@@ -53,10 +53,11 @@ Go:
 		code := obj.SC
 		name := obj.Name
 		try {
-			WootingKeys[code] := Wooting.AddKey(code, Func("InputEvent")
-				.Bind(code, name))
+			WootingKeys[code] := Wooting.AddKey(code)
+				.OnAnalog(Func("InputEvent").Bind(code, name, false))
+				.OnDigital(Func("InputEvent").Bind(code, name, true))
 				.SetBlock(BlockHotkeys)
-				.Init()
+				.SetHotkey(true)
 			rowCol := GetRowCol(code)
 			LogMessage("Subscribed to Key via Analog API`nCode: " code ", Name: " name "`nRow: " rowCol.Row ", Column: " rowCol.Col )
 			subbed++

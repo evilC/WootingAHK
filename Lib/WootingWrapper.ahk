@@ -18,9 +18,9 @@ class WootingWrapper {
 		}
 	}
 	
-	AddKey(scanCode, callback){
-		kwr := new this.WootingKey(this, scanCode, callback)
-		return kwr
+	AddKey(scanCode){
+		wk := new this.WootingKey(this, scanCode)
+		return wk
 	}
 	
 	SetKeyRgb(scanCode, red, green, blue){
@@ -40,18 +40,31 @@ class WootingWrapper {
 	}
 	
 	class WootingKey {
+		AnalogState := 0
 		DigitalState := 0
 		Blocked := 0
 		HotkeyEnabled := 0
 		WinTitle := ""
 		HotkeyStrings := {0: "", 1: ""}
+		AnalogCallback := 0
+		DigitalCallback := 0
 		
-		__New(parent, scanCode, callback){
+		__New(parent, scanCode){
 			this.Parent := parent
 			this.KeyName := GetKeyName("SC" Format("{:x}", scanCode))
 			this.ScanCode := scanCode
-			this.Callback := callback
-			this.Instance := this.Parent.Instance.SubscribeAnalog(this.ScanCode, callback)
+		}
+		
+		OnAnalog(callback := 0){
+			this.AnalogCallback := callback
+			this.Instance := this.Parent.Instance.SubscribeAnalog(this.ScanCode, this._AnalogStateChange.Bind(this))
+			return this
+		}
+		
+		OnDigital(callback := 0){
+			this.DigitalCallback := callback
+			this._ResetHotkeyIfNeeded()
+			return this
 		}
 		
 		SetBlock(state){
@@ -66,14 +79,14 @@ class WootingWrapper {
 			return this
 		}
 		
-		SetWinTitle(title){
+		SetWinTitle(winTitle){
 			this.WinTitle := winTitle
 			this._ResetHotkeyIfNeeded()
 			return this
 		}
 		
-		Init(){
-			this._SetHotkeyState(true)
+		SetHotkey(state){
+			this._SetHotkeyState(state)
 			return this
 		}
 		
@@ -112,12 +125,19 @@ class WootingWrapper {
 			this.HotkeyEnabled := state
 		}
 		
+		_AnalogStateChange(state){
+			this.AnalogState := state
+			if (this.AnalogCallback != 0)
+				this.AnalogCallback.Call(state)
+		}
+		
 		_DigitalStateChange(state){
 			if (this.DigitalState == state)
 				return
 			;~ this.Debug("Digital State: " state)
 			this.DigitalState := state
-			this.Callback.Call(true, state)
+			if (this.DigitalCallback != 0)
+				this.DigitalCallback.Call(state)
 		}
 		
 		Debug(str){
