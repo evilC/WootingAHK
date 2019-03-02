@@ -15,12 +15,7 @@ Again, all successes or failures will be logged.
 Any activity (Digital presses via AHK or analog presses via the API) will be
 added to the Key History
 
-If a WootingKey object could not be created for a given key, a backup hotkey
-will be created, so you can see if your keyboard actually sends that key.
-In this case, it's name will be prefixed with a * in the Key History
-
 The 'Block Keys' checkbox will turn on / off blocking of the WootingKey objects. 
-It will not affect the backup hotkeys, which never block
 )"
 Gui, Add, Text, % "xm w" fw, % infoText
 Gui, Add, Button, % "xm y+10 w" fw " gGo", Go
@@ -63,14 +58,6 @@ Go:
 		} catch e {
 			LogMessage("SubscribeKeyCode exception:`nCode: " code "`nName: " name "`nMessage:`n" e.message)
 			failed++
-			; Could not Subscribe to API via ScanCode, so Wrapper hotkey will not be created
-			; Create a non-blocking hotkey, route it to InputEvent as normal, but prefix the name with *
-			hex := Format("{:x}", code)
-			fn := Func("InputEvent").bind(code, "* " name, true, 1)
-			Hotkey, % "~*$SC" hex, % fn
-			fn := Func("InputEvent").bind(code, "* " name, true, 0)
-			Hotkey, % "~*$SC" hex " up", % fn
-			LogMessage("WootingKey object not created for key " name "`nCreating backup non-blocking hotkey and prefixing with *")
 		}
 	}
 	LogMessage("Subscriptions complete.`nSubscribed:" subbed "`nFailed: " failed)
