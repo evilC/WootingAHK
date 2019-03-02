@@ -9,7 +9,7 @@ At some point, the Wooting API should support Scan Codes, so this part should on
 * The RGB API does not properly support all keys on the Wooting Two at the moment
 
 ## Downloads
-Use the Releases page link at the top - **DO NOT** click the green "Clone or Download" button to the right!  
+Use the [Releases page](https://github.com/evilC/WootingAHK/releases) link at the top - **DO NOT** click the green "Clone or Download" button to the right!  
 
 ## Contact / Discussion etc
 Please use the [#woot_dev channel on the Wooting Discord server](https://discord.gg/zREJYgV)  
