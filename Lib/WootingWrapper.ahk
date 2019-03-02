@@ -52,6 +52,8 @@ class WootingWrapper {
 		_AnalogCallback := 0
 		_DigitalCallback := 0
 		
+		; ================ Public =================
+		
 		__New(parent, scanCode){
 			this._Parent := parent
 			this._KeyName := GetKeyName("SC" Format("{:x}", scanCode))
@@ -118,6 +120,8 @@ class WootingWrapper {
 		DigitalState(){
 			return this._DigitalState
 		}
+		
+		; ================ Private =================
 		
 		_SetHotkeyState(state){
 			if (this._WinTitle != ""){
