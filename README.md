@@ -18,3 +18,7 @@ Please use the [#woot_dev channel on the Wooting Discord server](https://discord
 
 # Usage
 See the some of the [Examples](https://github.com/evilC/WootingAHK/blob/master/Simple%20Example.ahk), or see the [Wiki](https://github.com/evilC/WootingAHK/wiki) for full documentation
+
+# Tools  
+See the [Key Tester](https://github.com/evilC/WootingAHK/blob/master/AllKeyTest.ahk) script  
+![](https://i.imgur.com/QhrGUxt.png)  
