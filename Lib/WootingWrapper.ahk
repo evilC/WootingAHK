@@ -1,6 +1,8 @@
 #include %A_LineFile%\..\CLR.ahk
 
 class WootingWrapper {
+	WootingKeys := {}
+	
 	__New(){
 		dllName := "WootingAHK.dll"
 		dllFile := A_LineFile "\..\" dllName
@@ -20,6 +22,7 @@ class WootingWrapper {
 	
 	AddKey(scanCode){
 		wk := new this.WootingKey(this, scanCode)
+		this.WootingKeys[scanCode] := wk
 		return wk
 	}
 	
