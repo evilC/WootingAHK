@@ -12,6 +12,7 @@ At some point, the Wooting API should support Scan Codes, so this part should on
 
 ## Downloads
 Use the [Releases page](https://github.com/evilC/WootingAHK/releases) link at the top - **DO NOT** click the green "Clone or Download" button to the right!  
+**After downloading, Right-click the Zip and select "Unblock", else the DLLs will be blocked**
 
 ## Contact / Discussion etc
 Please use the [#woot_dev channel on the Wooting Discord server](https://discord.gg/zREJYgV)  
@@ -27,4 +28,4 @@ It is also worth noting that if you need to deep block a key from windows (eg so
 
 # Tools  
 See the [Key Tester](https://github.com/evilC/WootingAHK/blob/master/AllKeyTest.ahk) script  
-![](https://i.imgur.com/QhrGUxt.png)  
+![](https://i.imgur.com/lG1GE44.png)  
