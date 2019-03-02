@@ -33,7 +33,7 @@ namespace WootingAHK
                 if (val != _currentValue)
                 {
                     _currentValue = val;
-                    _callbackThread.Actions.Add(() => _callback(val));
+                    _callbackThread.Actions.Add(() => _callback(false, val));
                 }
                 Thread.Sleep(10);
             }

@@ -1,44 +1,89 @@
 #include Lib\WootingWrapper.AHK
-#include Lib\AllKeyBinder.AHK
+OutputDebug DBGVIEWCLEAR
 
 fw := 400
 infoText := "
 (
-When you click Start, an AHK hotkey for every key on the keyboard is activated
-The first time you press each key, the script will attempt to Subscribe to 
-the Analog API for that key
+This script will attempt to create a WootingKey object for every known ScanCode.
+For each key, success or failure will be logged below.
 
-Then on any subsequent press, the Analog value for the key will be shown,
-and an attempt willbe made to turn that key Red via the RGB API 
+A WootingKey object includes an AHK hotkey, plus a subscription to the Analog API.
+On press, an attempt will be made to turn that key Red via the RGB API.
+On release, an attempt will be made to turn that key back to it's default colour.
+Again, all successes or failures will be logged.
 
-Any resulting errors will be shown in the log
-Click Stop to turn off the hotkeys.
-The analog subscriptions will remain but no new subscriptions will be made
+Any activity (Digital presses via AHK or analog presses via the API) will be
+added to the Key History
+
+If a WootingKey object could not be created for a given key, a backup hotkey
+will be created, so you can see if your keyboard actually sends that key.
+In this case, it's name will be prefixed with a * in the Key History
+
+The 'Block Keys' checkbox will turn on / off blocking of the WootingKey objects. 
+It will not affect the backup hotkeys, which never block
 )"
 Gui, Add, Text, % "xm w" fw, % infoText
-Gui, Add, Button, % "xm w" fw " gStartStop hwndhStartStop"
-Gui, Add, ListView, % "xm w" fw " hwndhAnalogData", Name|Code|State
+Gui, Add, Button, % "xm y+10 w" fw " gGo", Go
+Gui, Add, CheckBox, % "xm Checked vBlockHotkeys gBlockChanged", Block Keys (May need to run script as Admin to stop some apps seeing keys)
+Gui, Add, Text, % "xm y+10 Center w" fw, Key History
+Gui, Add, ListView, % "xm w" fw " hwndhAnalogData", Key Name|ScanCode (Dec)|Type|State
 LV_ModifyCol(1, 100)
-LV_ModifyCol(2, 50)
-LV_ModifyCol(3, 50)
+LV_ModifyCol(2, 100)
+LV_ModifyCol(3, 100)
+LV_ModifyCol(4, 50)
 Gui, Add, Button, % "xm w" fw " gClearAnalogData", Clear Data
+Gui, Add, Text, % "xm Center w" fw, Log
 Gui, Add, Edit, % "xm w" fw " R15 hwndhLog"
 Gui, Add, Button, % "xm w" fw " gClearLog", Clear Log
-Gui, Show
+Gui, Show, , WootingAHK Analog / RGB Tester
 
-SetStartStopState(0)
-KeyWatchers := {}
+HotkeysEnabled := 0
+GoSub, BlockChanged	; Init block var
+WootingKeys := {}
 Wooting := new WootingWrapper()
 
-hotkey, if, HotkeysEnabled
-kb := new AllKeyBinder(Func("KeyPressed"), "")
 return
 
-#if HotkeysEnabled ; Dummy block needed for hotkey, if
-#If
+Go:
+	if (HotkeysEnabled)
+		return
+	keys := GetKeySCs()
+	subbed := 0, failed := 0
+	for i, obj in keys {
+		code := obj.SC
+		name := obj.Name
+		try {
+			WootingKeys[code] := Wooting.SubscribeKey(code, Func("InputEvent")
+				.Bind(code, name))
+				.SetBlock(BlockHotkeys)
+				.Init()
+			rowCol := GetRowCol(code)
+			LogMessage("Subscribed to Key via Analog API`nCode: " code ", Name: " name "`nRow: " rowCol.Row ", Column: " rowCol.Col )
+			subbed++
+		} catch e {
+			LogMessage("SubscribeKeyCode exception:`nCode: " code "`nName: " name "`nMessage:`n" e.message)
+			failed++
+			; Could not Subscribe to API via ScanCode, so Wrapper hotkey will not be created
+			; Create a non-blocking hotkey, route it to InputEvent as normal, but prefix the name with *
+			hex := Format("{:x}", code)
+			fn := Func("InputEvent").bind(code, "* " name, true, 1)
+			Hotkey, % "~*$SC" hex, % fn
+			fn := Func("InputEvent").bind(code, "* " name, true, 0)
+			Hotkey, % "~*$SC" hex " up", % fn
+			LogMessage("WootingKey object not created for key " name "`nCreating backup non-blocking hotkey and prefixing with *")
+		}
+	}
+	LogMessage("Subscriptions complete.`nSubscribed:" subbed "`nFailed: " failed)
+	HotkeysEnabled := 1
+	return
 
-StartStop:
-	SetStartStopState(!HotkeysEnabled)
+BlockChanged:
+	Gui, Submit, NoHide
+	if (HotkeysEnabled){
+		for code, wootingKey in WootingKeys {
+			wootingKey.SetBlock(BlockHotkeys)
+		}
+	}
 	return
 
 ClearAnalogData:
@@ -53,51 +98,25 @@ ClearLog:
 GuiClose:
 	ExitApp
 
-SetStartStopState(state){
-	global HotkeysEnabled, hStartStop
-	
-	HotkeysEnabled := state
-	GuiControl, , % hStartStop, % (state ? "Stop" : "Start")
-}
-
-KeyPressed(code, name, state){
-	global Wooting, KeyWatchers, hLog
-	static keyStates := {}
-	;~ ToolTip % "Code: " code ", State: " state
-	if (state && keyStates[code])
-		return ; Filter key repeat
-	keyStates[code] := state
-	if (state){
-		try {
-			Wooting.SetKeyRgb(code, 255, 0, 0)
-		} catch e {
-			LogMessage("SetKeyRgb Exception:`nName: " name "`nMessage`n:" e.message)
-		}
-	} else {
-		try {
-			Wooting.ResetKeyRgb(code)
-		} catch e {
-			LogMessage("ResetKeyRgb exception:`nName: " name "`nMessage:`n" e.message)
-		}
-	}
-	if (KeyWatchers.HasKey(code))
-		return
-	try {
-		if (state){	; Only subscribe on key press
-			KeyWatchers[code] := Wooting.SubscribeKey(code, Func("AxisChanged").Bind(code, name)).Init()
-			rowCol := GetRowCol(code)
-			LogMessage("Subscribed to Key via API`nCode: " code ", Name: " name "`nRow: " rowCol.Row ", Column: " rowCol.Col )
-		}
-	} catch e {
-		LogMessage("SubscribeKeyCode exception:`nCode: " code "`nName: " name "`nMessage:`n" e.message)
-	}
-}
-
-AxisChanged(code, name, state){
-	global hAnalogData, hLog
-	;~ ToolTip % "Code: " code ", Name: " name ", State: " state
+InputEvent(code, name, isDigital, state){
+	global Wooting, hAnalogData, hLog
 	Gui, ListView, % hAnalogData
-	row := LV_Add(, name, code, state)
+	row := LV_Add(, name, code, (isDigital ? "AHK Hotkey" : "Analog API") , state)
+	if (isDigital){
+		if (state){
+			try {
+				Wooting.SetKeyRgb(code, 255, 0, 0)
+			} catch e {
+				LogMessage("SetKeyRgb Exception:`nName: " name "`nMessage`n:" e.message)
+			}
+		} else {
+			try {
+				Wooting.ResetKeyRgb(code)
+			} catch e {
+				LogMessage("ResetKeyRgb exception:`nName: " name "`nMessage:`n" e.message)
+			}
+		}
+	}
 	LV_Modify(row, "Vis")
 }
 
@@ -120,4 +139,21 @@ AppendText(hEdit, ptrText) {
     SendMessage, 0x000E, 0, 0,, ahk_id %hEdit% ;WM_GETTEXTLENGTH
     SendMessage, 0x00B1, ErrorLevel, ErrorLevel,, ahk_id %hEdit% ;EM_SETSEL
     SendMessage, 0x00C2, False, ptrText,, ahk_id %hEdit% ;EM_REPLACESEL
+}
+
+GetKeySCs(){
+	names := {}
+	keys := []
+	Loop 512 {
+		i := A_Index
+		if (i == 84)	; ignore PrintScreen on 84, use 311
+			continue
+		code := Format("{:x}", i)
+		n := GetKeyName("sc" code)
+		if (n == "" || names.HasKey(n))
+			continue
+		names[n] := 1
+		keys.Push({SC: i, Name: n})
+	}
+	return keys
 }

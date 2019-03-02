@@ -19,7 +19,7 @@ class WootingWrapper {
 	}
 	
 	SubscribeKey(scanCode, callback){
-		kwr := new this.KeyWatcherWrapper(this, scanCode, callback)
+		kwr := new this.WootingKey(this, scanCode, callback)
 		return kwr
 	}
 	
@@ -39,8 +39,7 @@ class WootingWrapper {
 		this.Instance.Dispose()
 	}
 	
-	class KeyWatcherWrapper {
-		AnalogState := 0
+	class WootingKey {
 		DigitalState := 0
 		Blocked := 0
 		HotkeyEnabled := 0
@@ -86,7 +85,7 @@ class WootingWrapper {
 		
 		_SetHotkeyState(state){
 			if (this.WinTitle != ""){
-				this.Debug("Setting context to " this.WinTitle)
+				;~ this.Debug("Setting context to " this.WinTitle)
 				hotkey, IfWinActive, % this.WinTitle
 			}
 			Loop 2 {
@@ -118,18 +117,8 @@ class WootingWrapper {
 				return
 			;~ this.Debug("Digital State: " state)
 			this.DigitalState := state
-			;~ this.Callback.Call(state) ; Disabled - use analog only for now
+			this.Callback.Call(true, state)
 		}
-		
-		/*
-		_AnalogStateChange(state){
-			if (this.AnalogState == state)
-				return
-			;~ this.Debug("Analog State: " state)
-			this.AnalogState := state
-			this.Callback.Call(1, state)
-		}
-		*/
 		
 		Debug(str){
 			OutputDebug % "AHK| " str
