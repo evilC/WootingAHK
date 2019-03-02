@@ -21,7 +21,7 @@ See the some of the [Examples](https://github.com/evilC/WootingAHK/blob/master/S
 
 # Interfacing with other stuff (Virtual Joysticks etc)
 WootingAHK does not (Nor could it) control the analog sticks on the Wooting, or create sticks of it's own.  
-If you wish to create DirectInput joysticks, you can use [CvJoyInterface](https://github.com/evilC/AHK-CvJoyInterface) 
+If you wish to create DirectInput joysticks, you can use [CvJoyInterface](https://github.com/evilC/AHK-CvJoyInterface)  
 If you wish to create XInput or DualShock 3 controllers, you can use [AHK-ViGEm-Bus](https://github.com/evilC/AHK-ViGEm-Bus), although this is still rather under-developed.  
 It is also worth noting that if you need to deep block a key from windows (eg some game or app is seeing through AHK's block), the [AutoHotInterception](https://github.com/evilC/AutoHotInterception) library can do that, and uses an identical ScanCode identifier for keys.  
 
