@@ -51,7 +51,7 @@ class WootingWrapper {
 			this.KeyName := GetKeyName("SC" Format("{:x}", scanCode))
 			this.ScanCode := scanCode
 			this.Callback := callback
-			this.Instance := this.Parent.Instance.SubscribeKey(this.ScanCode, callback)
+			this.Instance := this.Parent.Instance.SubscribeAnalog(this.ScanCode, callback)
 		}
 		
 		SetBlock(state){

@@ -16,7 +16,7 @@ namespace WootingAHK
         {
         }
 
-        public KeyWatcher SubscribeKey(int scanCode, dynamic callback)
+        public KeyWatcher SubscribeAnalog(int scanCode, dynamic callback)
         {
             _CheckKeyCode(scanCode);
             var tuple = WootingCodeLookup.ScanCodeToRowCol[scanCode];
