@@ -39,7 +39,6 @@ Gui, Show, , WootingAHK Analog / RGB Tester
 
 HotkeysEnabled := 0
 GoSub, BlockChanged	; Init block var
-WootingKeys := {}
 Wooting := new WootingWrapper()
 
 return
@@ -52,12 +51,12 @@ Go:
 	for i, obj in keys {
 		code := obj.SC
 		name := obj.Name
+		wootingKey := Wooting.AddKey(code)
+			.OnDigital(Func("InputEvent").Bind(code, name, true))
+			.SetBlock(BlockHotkeys)
+			.SetHotkey(true)
 		try {
-			WootingKeys[code] := Wooting.AddKey(code)
-				.OnAnalog(Func("InputEvent").Bind(code, name, false))
-				.OnDigital(Func("InputEvent").Bind(code, name, true))
-				.SetBlock(BlockHotkeys)
-				.SetHotkey(true)
+			wootingKey.OnAnalog(Func("InputEvent").Bind(code, name, false))
 			rowCol := GetRowCol(code)
 			LogMessage("Subscribed to Key via Analog API`nCode: " code ", Name: " name "`nRow: " rowCol.Row ", Column: " rowCol.Col )
 			subbed++
@@ -81,7 +80,7 @@ Go:
 BlockChanged:
 	Gui, Submit, NoHide
 	if (HotkeysEnabled){
-		for code, wootingKey in WootingKeys {
+		for code, wootingKey in Wooting.WootingKeys {
 			wootingKey.SetBlock(BlockHotkeys)
 		}
 	}
