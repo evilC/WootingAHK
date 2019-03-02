@@ -53,7 +53,7 @@ Go:
 		code := obj.SC
 		name := obj.Name
 		try {
-			WootingKeys[code] := Wooting.SubscribeKey(code, Func("InputEvent")
+			WootingKeys[code] := Wooting.AddKey(code, Func("InputEvent")
 				.Bind(code, name))
 				.SetBlock(BlockHotkeys)
 				.Init()

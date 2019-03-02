@@ -18,7 +18,7 @@ class WootingWrapper {
 		}
 	}
 	
-	SubscribeKey(scanCode, callback){
+	AddKey(scanCode, callback){
 		kwr := new this.WootingKey(this, scanCode, callback)
 		return kwr
 	}

@@ -3,7 +3,7 @@
 Wooting := new WootingWrapper()
 
 last := A_TickCount
-wootingKey := Wooting.SubscribeKey(GetKeySC("A")	; Subscribe to the A key - use the Scan Code
+wootingKey := Wooting.AddKey(GetKeySC("A")	; Subscribe to the A key - use the Scan Code
 		, Func("AxisChanged"))
 		.SetBlock(true)
 		;~ .SetWinTitle("ahk_class Notepad")		; Only enable the hotkey in Notepad
