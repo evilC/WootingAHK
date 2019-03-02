@@ -1,6 +1,9 @@
 #include Lib\WootingWrapper.AHK
 OutputDebug DBGVIEWCLEAR
 
+ShortSep := "========================="
+LongSep := ShortSep ShortSep
+
 fw := 400
 infoText := "
 (
@@ -46,6 +49,7 @@ Go:
 	for i, obj in keys {
 		code := obj.SC
 		name := obj.Name
+		LogMessage("Key '" name "' - Code: " code "`n`n")
 		wootingKey := Wooting.AddKey(code)
 			.OnDigital(Func("InputEvent").Bind(code, name, true))
 			.SetBlock(BlockHotkeys)
@@ -53,14 +57,15 @@ Go:
 		try {
 			wootingKey.OnAnalog(Func("InputEvent").Bind(code, name, false))
 			rowCol := GetRowCol(code)
-			LogMessage("Subscribed to Key via Analog API`nCode: " code ", Name: " name "`nRow: " rowCol.Row ", Column: " rowCol.Col )
+			LogMessage("Subscribed to Key via Analog API - Row: " rowCol.Row ", Column: " rowCol.Col "`n" )
 			subbed++
 		} catch e {
-			LogMessage("SubscribeKeyCode exception:`nCode: " code "`nName: " name "`nMessage:`n" e.message)
+			LogMessage("SubscribeAnalog exception:`n" e.message "`n")
 			failed++
 		}
+		LogMessage(LongSep "`n`n")
 	}
-	LogMessage("Subscriptions complete.`nSubscribed:" subbed "`nFailed: " failed)
+	LogMessage("Subscriptions complete.`nSubscribed:" subbed "`nFailed: " failed "`n`n" LongSep "`n`n")
 	HotkeysEnabled := 1
 	return
 
@@ -94,13 +99,13 @@ InputEvent(code, name, isDigital, state){
 			try {
 				Wooting.SetKeyRgb(code, 255, 0, 0)
 			} catch e {
-				LogMessage("SetKeyRgb Exception:`nName: " name "`nMessage`n:" e.message)
+				LogMessage("SetKeyRgb Exception:`nName: " name "`nMessage`n:" e.message "`n" ShortSep "`n")
 			}
 		} else {
 			try {
 				Wooting.ResetKeyRgb(code)
 			} catch e {
-				LogMessage("ResetKeyRgb exception:`nName: " name "`nMessage:`n" e.message)
+				LogMessage("ResetKeyRgb exception:`nName: " name "`nMessage:`n" e.message "`n" ShortSep "`n")
 			}
 		}
 	}
@@ -109,8 +114,12 @@ InputEvent(code, name, isDigital, state){
 
 LogMessage(str){
 	global hLog
-	str := RegExReplace(str, "\n", "`r`n") "`r`n====================`r`n"
+	str := ConvertCR(str)
 	AppendText(hLog, &str)
+}
+
+ConvertCR(str){
+	return RegExReplace(str, "\n", "`r`n")
 }
 
 GetRowCol(code){
