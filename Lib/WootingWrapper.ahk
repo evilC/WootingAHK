@@ -43,47 +43,47 @@ class WootingWrapper {
 	}
 	
 	class WootingKey {
-		AnalogState := 0
-		DigitalState := 0
-		Blocked := 0
-		HotkeyEnabled := 0
-		WinTitle := ""
-		HotkeyStrings := {0: "", 1: ""}
-		AnalogCallback := 0
-		DigitalCallback := 0
+		_AnalogState := 0
+		_DigitalState := 0
+		_Blocked := 0
+		_HotkeyEnabled := 0
+		_WinTitle := ""
+		_HotkeyStrings := {0: "", 1: ""}
+		_AnalogCallback := 0
+		_DigitalCallback := 0
 		
 		__New(parent, scanCode){
-			this.Parent := parent
-			this.KeyName := GetKeyName("SC" Format("{:x}", scanCode))
-			this.ScanCode := scanCode
+			this._Parent := parent
+			this._KeyName := GetKeyName("SC" Format("{:x}", scanCode))
+			this._ScanCode := scanCode
 		}
 		
 		OnAnalog(callback := 0){
-			this.AnalogCallback := callback
-			this.Instance := this.Parent.Instance.SubscribeAnalog(this.ScanCode, this._AnalogStateChange.Bind(this))
+			this._AnalogCallback := callback
+			this.Instance := this._Parent.Instance.SubscribeAnalog(this._ScanCode, this._AnalogStateChange.Bind(this))
 			return this
 		}
 		
 		OnDigital(callback := 0){
-			this.DigitalCallback := callback
+			this._DigitalCallback := callback
 			this._ResetHotkeyIfNeeded()
 			return this
 		}
 		
 		SetBlock(state){
-			this.Blocked := state
+			this._Blocked := state
 			this._ResetHotkeyIfNeeded()
 			return this
 		}
 		
 		ToggleBlock(){
-			this.SetBlock(!this.Blocked)
+			this.SetBlock(!this._Blocked)
 			this._ResetHotkeyIfNeeded()
 			return this
 		}
 		
 		SetWinTitle(winTitle){
-			this.WinTitle := winTitle
+			this._WinTitle := winTitle
 			this._ResetHotkeyIfNeeded()
 			return this
 		}
@@ -94,57 +94,73 @@ class WootingWrapper {
 		}
 		
 		SetRgb(red, green, blue){
-			this.parent.SetKeyRgb(this.ScanCode, red, green, blue)
+			this._Parent.SetKeyRgb(this._ScanCode, red, green, blue)
 		}
 		
 		_ResetHotkeyIfNeeded(){
-			if (this.HotkeyEnabled){
+			if (this._HotkeyEnabled){
 				this._SetHotkeyState(true)
 			}
 		}
 		
+		Blocked(){
+			return this._Blocked
+		}
+		
+		HotkeyEnabled(){
+			return this._HotkeyEnabled
+		}
+		
+		AnalogState(){
+			return this._AnalogState
+		}
+		
+		DigitalState(){
+			return this._DigitalState
+		}
+		
 		_SetHotkeyState(state){
-			if (this.WinTitle != ""){
-				;~ this.Debug("Setting context to " this.WinTitle)
-				hotkey, IfWinActive, % this.WinTitle
+			if (this._WinTitle != ""){
+				;~ this.Debug("Setting context to " this._WinTitle)
+				hotkey, IfWinActive, % this._WinTitle
 			}
 			Loop 2 {
 				i := A_Index - 1
-				if (this.HotKeyStrings[i] != ""){
-					Hotkey, % this.HotKeyStrings[i], Off
-					this.HotKeyStrings[i] := ""
+				if (this._HotkeyStrings[i] != ""){
+					Hotkey, % this._HotkeyStrings[i], Off
+					this._HotkeyStrings[i] := ""
 				}
 			}
 			if (state){
-				blk := this.Blocked ? "" : "~"
+				blk := this._Blocked ? "" : "~"
 				
 				fn := this._DigitalStateChange.Bind(this, 1)
-				str := blk "*$" this.KeyName
-				this.HotkeyStrings[1] := str
+				str := blk "*$" this._KeyName
+				this._HotkeyStrings[1] := str
 				Hotkey, % str, % fn, On
 				
 				fn := this._DigitalStateChange.Bind(this, 0)
-				str := blk "*$" this.KeyName " up"
-				this.HotkeyStrings[0] := str
+				str := blk "*$" this._KeyName " up"
+				this._HotkeyStrings[0] := str
 				Hotkey, % str, % fn, On
 				hotkey, IfWinActive	; Turn off context-sensitve mode for further hotkeys
 			}
-			this.HotkeyEnabled := state
+			this._HotkeyEnabled := state
 		}
 		
 		_AnalogStateChange(state){
-			this.AnalogState := state
-			if (this.AnalogCallback != 0)
-				this.AnalogCallback.Call(state)
+			this._AnalogState := state
+			if (this._AnalogCallback != 0)
+				this._AnalogCallback.Call(state)
 		}
 		
 		_DigitalStateChange(state){
-			if (this.DigitalState == state)
+			if (this._DigitalState == state)
 				return
 			;~ this.Debug("Digital State: " state)
-			this.DigitalState := state
-			if (this.DigitalCallback != 0)
-				this.DigitalCallback.Call(state)
+			this._DigitalState := state
+			if (this._DigitalCallback != 0)
+				this._DigitalCallback.Call(state)
 		}
 		
 		Debug(str){

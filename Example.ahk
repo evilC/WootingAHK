@@ -15,7 +15,7 @@ return
 F1::
 	wootingKey.ToggleBlock()			; Toggle blocking
 	InitToggleBlock:
-	if (wootingKey.Blocked){
+	if (wootingKey.Blocked()){
 		Wooting.SetKeyRgb(GetKeySC("F1"), 255, 0, 0)	; Turn F1 Red to indicate key is disabled
 	} else {
 		Wooting.SetKeyRgb(GetKeySC("F1"), 0, 255, 0)	; Turn F1 Green to indicate key is enabled
