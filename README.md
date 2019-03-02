@@ -22,4 +22,4 @@ Use the Releases page link at the top - **DO NOT** click the green "Clone or Dow
 Please use the [#woot_dev channel on the Wooting Discord server](https://discord.gg/zREJYgV)  
 
 # Usage
-See the [Wiki](https://github.com/evilC/WootingAHK/wiki)
+See the some of the [Examples](https://github.com/evilC/WootingAHK/blob/master/Simple%20Example.ahk), or see the [Wiki](https://github.com/evilC/WootingAHK/wiki) for full documentation
