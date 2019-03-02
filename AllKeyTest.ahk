@@ -24,7 +24,7 @@ Gui, Add, Text, % "xm w" fw, % infoText
 Gui, Add, Button, % "xm y+10 w" fw " gGo", Go
 Gui, Add, CheckBox, % "xm Checked vBlockHotkeys gBlockChanged", Block Keys (May need to run script as Admin to stop some apps seeing keys)
 Gui, Add, Text, % "xm y+10 Center w" fw, Key History
-Gui, Add, ListView, % "xm w" fw " hwndhAnalogData", Key Name|ScanCode (Dec)|Type|State
+Gui, Add, ListView, % "xm h200 w" fw " hwndhAnalogData", Key Name|ScanCode (Dec)|Type|State
 LV_ModifyCol(1, 100)
 LV_ModifyCol(2, 100)
 LV_ModifyCol(3, 100)
