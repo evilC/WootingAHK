@@ -90,6 +90,10 @@ class WootingWrapper {
 			return this
 		}
 		
+		SetRgb(red, green, blue){
+			this.parent.SetKeyRgb(this.ScanCode, red, green, blue)
+		}
+		
 		_ResetHotkeyIfNeeded(){
 			if (this.HotkeyEnabled){
 				this._SetHotkeyState(true)
