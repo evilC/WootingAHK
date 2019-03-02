@@ -4,7 +4,8 @@ An AutoHotkey wrapper for the [Wooting Keyboard](https://wooting.io/) [Analog](h
 Allows you to write AutoHotkey scripts that can read analog values (Without using DirectInput or XInput) and set RGB values for the keys. 
 
 ## Current Limitations / Issues
-* Currently, the [lookup table](https://github.com/evilC/WootingAHK/blob/master/WootingAHK/WootingCodeLookup.cs) is only complete for ISO keyboards. If you have an ANSI keyboard, please feel free to contribute  
+* Currently, the [Scan Code to Wooting Code lookup table](https://github.com/evilC/WootingAHK/blob/master/WootingAHK/WootingCodeLookup.cs) is only complete for ISO keyboards. If you have an ANSI keyboard, please feel free to contribute  
+At some point, the Wooting API should support Scan Codes, so this part should only be temporary.  
 * The RGB API does not properly support all keys on the Wooting Two at the moment
 
 ## Downloads
