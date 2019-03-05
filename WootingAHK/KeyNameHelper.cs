@@ -7,13 +7,24 @@ using System.Threading.Tasks;
 
 namespace WootingAHK
 {
-    static class KeyNameHelper
+    public static class KeyNameHelper
     {
         [DllImport("user32", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern int GetKeyNameTextW(uint lParam, StringBuilder lpString, int nSize);
+        private static extern int GetKeyNameTextW(uint lParam, StringBuilder lpString, int nSize);
+
+        // GetKeyNameTextW does not seem to return names for these ScanCodes
+        private static readonly Dictionary<int, string> MissingKeyNames = new Dictionary<int, string>
+        {
+            { 100, "F13" }, { 101, "F14" }, { 101, "F15" }, { 101, "F16" }, { 101, "F17" }, { 101, "F18" }, 
+            { 101, "F19" }, { 101, "F20" }, { 101, "F21" }, { 101, "F22" }, { 101, "F23" }, { 101, "F24" }
+        };
 
         public static string GetNameFromScanCode(int code)
         {
+            if (MissingKeyNames.ContainsKey(code))
+            {
+                return MissingKeyNames[code];
+            }
             code -= 1;
             uint lParam;
             if (code > 255)
