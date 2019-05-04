@@ -10,7 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 		Dependencies\Readme.md = Dependencies\Readme.md
 		Dependencies\wooting-analog-sdk.dll = Dependencies\wooting-analog-sdk.dll
 		Dependencies\wooting-rgb-sdk.dll = Dependencies\wooting-rgb-sdk.dll
-		Dependencies\Wooting.NET.dll = Dependencies\Wooting.NET.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{6B471D66-7C0B-4F8C-B381-7B6986800C7C}"
