@@ -20,10 +20,10 @@ return
 ; value will be 1 for pressed, 0 for released
 HotkeyChanged(value){
 	global lastHotkeyTime
-	MouseGetPos, x, y
-	t := A_TickCount
-	ToolTip % "Hotkey Changed. Value: " value " @ " t, x + 20, y-10, 1
 	if (value){
+		MouseGetPos, x, y
+		t := A_TickCount
+		ToolTip % "Hotkey Pressed @ " t, x + 20, y-10, 1
 		lastHotkeyTime := t
 	}
 }
@@ -33,16 +33,20 @@ HotkeyChanged(value){
 AxisChanged(value){
 	global lastHotkeyTime
 	static lastValue := -1
+	static lastAxisTime := 0
 	t := A_TickCount
 	MouseGetPos, x, y
 	if (lastValue == -1){
-		ToolTip % "Axis Started Changing @ " t "(Hotkey + " t - lastHotkeyTime ")", x + 20, y+10, 2
-	} else {
-		ToolTip % "Axis Changed. Value: " value " @ " t, x + 20, y+30, 3
+		lastAxisTime := t
 	}
-	if (value == 0){
+	if (value == 0 && lastValue > 0){
+		elapsed := lastHotkeyTime - lastAxisTime
+		if (elapsed >= 0)
+			sgn := "+"
+		ToolTip % "Axis Started Changing @ " lastAxisTime "(Hotkey " sgn elapsed ")", x + 20, y+10, 2
 		lastValue := -1
 	} else {
+		ToolTip % "Axis Changed. Value: " value " @ " t, x + 20, y+30, 3
 		lastValue := value
 	}
 }
