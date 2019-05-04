@@ -1,6 +1,9 @@
 /*
-Simplest example of using the wooting wrapper for input only
-Demos Analog and Digital input, and how to create WootingKeys
+Tries to measure timing of Wooting API responses
+Subscribes to a key using an AHK hotkey and a Wooting API subscription
+Measures the time difference between each when you press the key
+Calculations done when you release the key and not on first update of hotkey or analog API...
+... as theoretically the API could respond before or after the hotkey
 */
 #include Lib\WootingAHK.AHK
 
