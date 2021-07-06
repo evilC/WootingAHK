@@ -1,6 +1,5 @@
-Dependencies  
-These are baked into the repo, as at the current time of writing, the latest release of the Wooting SDK does not support the Wooting Two
+# SDK documentation
+https://github.com/WootingKb/wooting-analog-wrappers
 
-`wooting-analog-sdk.dll` is from Gottz    
-`wooting-rgb-sdk.dll` is from BigBrain  
-
+# Dependencies  
+wooting_analog_wrapper.dll comes from: https://github.com/WootingKb/wooting-analog-wrappers/tree/master/libs/win-x64

@@ -1,3 +1,8 @@
+# new-sdk branch notes
+* Rewrite of wrapper using the [new Wooting SDK](https://github.com/WootingKb/wooting-analog-sdk) and [Analog Wrapper](https://github.com/WootingKb/wooting-analog-wrappers)
+* **ONLY** Supports 64-bit AHK (Because the Wooting SDK is x64-only?)
+* RGB support removed
+
 # About WootingAHK
 
 An AutoHotkey wrapper for the [Wooting Keyboard](https://wooting.io/) [Analog](https://github.com/WootingKb/wooting-analog-sdk) and [RGB](https://github.com/WootingKb/wooting-rgb-sdk) APIs  
