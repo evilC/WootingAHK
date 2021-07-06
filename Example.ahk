@@ -8,18 +8,18 @@ wootingKey := Wooting.AddKey(GetKeySC("A"))			; Create a WootingKey for the A ke
 		.SetBlock(true)								; Enable blocking for the hotkey
 		.SetHotkey(true)							; Turn on the hotkey
 
-GoSub, InitToggleBlock
+;~ GoSub, InitToggleBlock
 return
 
 ; Toggle disabling of key, even if in Notepad
 F1::
 	wootingKey.ToggleBlock()			; Toggle blocking
 	InitToggleBlock:
-	if (wootingKey.Blocked()){
-		Wooting.SetKeyRgb(GetKeySC("F1"), 255, 0, 0)	; Turn F1 Red to indicate key is disabled
-	} else {
-		Wooting.SetKeyRgb(GetKeySC("F1"), 0, 255, 0)	; Turn F1 Green to indicate key is enabled
-	}
+	;~ if (wootingKey.Blocked()){
+		;~ Wooting.SetKeyRgb(GetKeySC("F1"), 255, 0, 0)	; Turn F1 Red to indicate key is disabled
+	;~ } else {
+		;~ Wooting.SetKeyRgb(GetKeySC("F1"), 0, 255, 0)	; Turn F1 Green to indicate key is enabled
+	;~ }
 	return
 
 ; Called and passed analog value when key changes state
